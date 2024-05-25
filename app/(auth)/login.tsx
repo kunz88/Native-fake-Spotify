@@ -1,53 +1,96 @@
-import { Text, TextInput, TouchableOpacity, View, SafeAreaView, ScrollView,Image } from 'react-native'
+import { Text, TouchableOpacity, View, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
-
-import { Ionicons } from '@expo/vector-icons'
 import FormField from '@/components/form/FormField'
+import { Link, router } from 'expo-router'
+import CustomButton from '@/components/buttons/CustomButton'
+import CustomButtonWithIcon from '@/components/buttons/CustomButtonWithIcon'
+import Container from '@/components/Container'
+import agent from '@/utils/agent'
+import { useDispatch } from 'react-redux'
+import { setUserState } from '@/SliceContext/userSlice'
+import { UserResponse } from '@/model/user'
+import { AxiosError } from 'axios'
+import LoaderComponent from '@/components/LoaderComponent'
 
-type loginFormType = {
-  email:string,
-  password:string
+type LoginFormType = {
+  email: string,
+  password: string
 }
+type FormState = 'typing' | 'submitting' | 'success' | 'error'
+
+
 const Login = () => {
-  const [loginForm, setloginForm] = useState<loginFormType>({
-    email:"",
-    password:""
+  const dispatch = useDispatch()
+  const [loginForm, setloginForm] = useState<LoginFormType>({
+    email: "",
+    password: ""
   })
+  const [status, setStatus] = useState<FormState>('typing');
 
+  const handleSubmit = () => {
+    setStatus('submitting');
+    if(!loginForm.email || !loginForm.password || loginForm.email.length < 5 || loginForm.password.length < 5){
+      Alert.alert(`Per favore inserire email e password valide`)
+    }else{
+      agent.SignIn.signin(loginForm).then((userData:UserResponse ) => {
+        dispatch(setUserState(userData.user))
+        Alert.alert(`Benvenuto ${userData.user.name.charAt(0).toUpperCase()}${userData.user.name.slice(1)}!`)
+        setloginForm({ email: "", password: "" })
+        setStatus('success')
+        console.log("done")
+        router.replace("/home")
 
+      }).catch((error:AxiosError) => {
+        setStatus('error')
+        Alert.alert(`${loginForm.email}`)
+        Alert.alert(`${error}`)
+        setloginForm({ email: "", password: "" })
+        console.log(error)
+        router.replace("/")
+      })
+    }
+
+  }
+  const [showPassword, setshowPassword] = useState(true)
+  if(status === "submitting"){
+    return (
+    <LoaderComponent></LoaderComponent>
+    )
+
+  }
   return (
-    <SafeAreaView className='flex-1 justify-center items-center h-full'>
-      <ScrollView>
-        <View className=' justify-center items-center w-full min-h-[85vh]'>
-        <Image source={{uri:'https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png'}} className='w-[115px] h-[150px] self-start' resizeMode='contain'></Image>
-          <Text className='text-4xl leading-10 font-cbold text-white mb-8 text-center'>
-            Accedi a Spotify
-          </Text>
-          <FormField value={loginForm.email} title='Indirizzo e-mail o nome utente' placeholder='Inserisci Email...' handleChangeEvent={(e) => setloginForm({...loginForm,email:e } )} isSecure={false} type='email-address'></FormField>
-          <FormField value={loginForm.password} title='Password' placeholder='Inserisci Password...' handleChangeEvent={(e) => setloginForm({...loginForm,password:e } )} isSecure={true} ></FormField>
-          <View className='mt-5 mx-5'>
-            <TouchableOpacity className='bg-primary rounded-3xl p-3 mt-4'>
-              <Text className='text-center text-base font-cblack'>Accedi</Text>
-            </TouchableOpacity>
 
-            <Text className='text-center text-gray-500 mt-3 font-clight text-sm'>
-              OR
-            </Text>
-            <View className='mt-4'>
-              <TouchableOpacity className='flex flex-row items-center justify-center content-center p-2 border-2 border-gray-500 rounded-3xl'>
-                <Text className='text-white mx-2 text-sm'><Ionicons size={14} name="logo-google" />  Sign In With Google  </Text>
-              </TouchableOpacity>
-            </View>
-            <View className='mt-6 flex-row justify-center'>
-              <Text className='text-white'>non hai un account? </Text>
-              <TouchableOpacity>
-                <Text className='text-white underline font-cbold'>Iscriviti a Spotify</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+    
+
+    <Container>
+      <Image source={{ uri: 'https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png' }} className='w-[115px] h-[150px] self-start' resizeMode='contain'></Image>
+
+      <Text className='text-4xl leading-10 font-cbold text-white mb-8 text-center'>
+        Accedi a Spotify
+      </Text>
+
+      <FormField value={loginForm.email} title='Indirizzo e-mail o nome utente' placeholder='Inserisci Email...' handleChangeEvent={(e) => setloginForm({ ...loginForm, email: e })} isSecure={false} type='email-address'></FormField>
+      <FormField value={loginForm.password} title='Password' placeholder='Inserisci Password...' handleChangeEvent={(e) => setloginForm({ ...loginForm, password: e })} isSecure={showPassword} handleShowPassword={() => setshowPassword((oldValue) => !oldValue)}></FormField>
+
+      <View className='mt-5 mx-5'>
+        <CustomButton bgColor='bg-primary' title='Accedi' onPress={handleSubmit}></CustomButton>
+
+
+        <Text className='text-center text-gray-500 mt-3 font-clight text-sm'>
+          OR
+        </Text>
+        <CustomButtonWithIcon icon='logo-google' title='login con Google'></CustomButtonWithIcon>
+        <View className='mt-6 flex-row justify-center'>
+          <Text className='text-white'>non hai un account? </Text>
+          <TouchableOpacity>
+            <Link href={"/signup"}><Text className='text-white underline font-cbold'>Iscriviti a Spotify</Text></Link>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </Container>
+
+
+
   )
 }
 
