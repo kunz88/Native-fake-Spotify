@@ -9,18 +9,14 @@ type RequestOptions = {
   };
 };
 
-const useArtists = (artistNames: string[],token:string | null) => {
+const useArtists = (artistNames: string[], token: string | null) => {
   const [artists, setArtists] = useState<ArtistItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setIsHasError] = useState(false);
 
-  
   useEffect(() => {
-
-
     // funzione per fetchare tutta la lista degli artisti dalle API di spotify
     const loadData = async (requestHeadears: RequestOptions) => {
-    
       const artistsResponse = await Promise.all(
         artistNames.map(async (artistName) => {
           // per ogni artista setta il nome e fa la chiamata
@@ -34,24 +30,25 @@ const useArtists = (artistNames: string[],token:string | null) => {
       setIsLoading(false);
       return artistsResponse;
     };
-    
-    
+
     const requestHeadears = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}}   
-    `,
+        Authorization: `Bearer ${token}`,
       },
     };
-    try {
-      setIsLoading(true);
-      const artistsResponse = loadData(requestHeadears);
 
-      artistsResponse.then((results) => setArtists(results));
-    } catch (error) {
-      console.log(error);
-      setIsHasError(true);
-    }
+    setIsLoading(true);
+    const artistsResponse = loadData(requestHeadears);
+    artistsResponse
+      .then((results) => {
+        setArtists(results);
+        console.log("data loaded {from useArtist hook}");
+      })
+      .catch((error) => {
+        console.log(`error (from useArtistHook) ${error}`);
+        setIsHasError(true);
+      });
   }, []);
 
   return { artists, isLoading, hasError };

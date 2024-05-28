@@ -12,6 +12,7 @@ import { UserResponse } from '@/model/user'
 import { AxiosError } from 'axios'
 import LoaderComponent from '@/components/LoaderComponent'
 
+
 type LoginFormType = {
   email: string,
   password: string
@@ -33,24 +34,28 @@ const Login = () => {
       Alert.alert(`Per favore inserire email e password valide`)
     }else{
       agent.SignIn.signin(loginForm).then((userData:UserResponse ) => {
+        // setto l'utente di sessione
         dispatch(setUserState(userData.user))
+
         Alert.alert(`Benvenuto ${userData.user.name.charAt(0).toUpperCase()}${userData.user.name.slice(1)}!`)
         setloginForm({ email: "", password: "" })
         setStatus('success')
         console.log("done")
-        router.replace("/home")
+        router.replace("/welcome")
 
       }).catch((error:AxiosError) => {
         setStatus('error')
-        Alert.alert(`${loginForm.email}`)
-        Alert.alert(`${error}`)
+
+        Alert.alert(`${error.message}`)
+
         setloginForm({ email: "", password: "" })
-        console.log(error)
         router.replace("/")
       })
     }
-
   }
+
+
+  
   const [showPassword, setshowPassword] = useState(true)
   if(status === "submitting"){
     return (

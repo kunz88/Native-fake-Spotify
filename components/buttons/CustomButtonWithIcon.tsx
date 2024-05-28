@@ -3,8 +3,9 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 
 type CustomButtonWithIconProps = {
-  icon:"logo-google" | "logo-facebook" | "logo-apple",
-  title:string
+  icon:"logo-google" | "logo-facebook" | "logo-apple" | "musical-note" | "mic" ,
+  title:string,
+
 }
 
 const CustomButtonWithIcon = ({icon,title}:CustomButtonWithIconProps) => {

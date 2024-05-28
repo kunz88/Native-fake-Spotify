@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from "axios";
 // EVITANDO RIDONDANZA DEL CODICE
 
 // opzione per l'url base per tutte le chiamate di axios
-axios.defaults.baseURL = 'http://192.168.0.142:3000';
+axios.defaults.baseURL = 'http://192.168.10.3:3000';
 
 // opzione per ricezione di cookies
  axios.defaults.withCredentials = true; 
