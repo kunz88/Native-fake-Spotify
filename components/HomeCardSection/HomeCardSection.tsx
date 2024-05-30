@@ -5,9 +5,9 @@ const HomeCardSection = ({ title,children }: { title: string } & PropsWithChildr
     return (
         <View>
             <Text className='text-white text-left p-2 font-cbold text-2xl'>{title}</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+           
                 {children}
-            </ScrollView>
+          
         </View>
     )
 }

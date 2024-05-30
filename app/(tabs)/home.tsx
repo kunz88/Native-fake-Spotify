@@ -8,13 +8,14 @@ import { StoreState } from '@/store/store';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { View, Text, ScrollView, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Ionicons } from '@expo/vector-icons';
 import CardHeader from '@/components/HomeCardSection/CardHeader';
 import FakeListComponent from '@/components/FakeListComponent/FakeListComponent';
 import Container from '@/components/Container';
+import { useState } from 'react';
 
 
 
@@ -23,10 +24,16 @@ const HomeScreen = () => {
   const user = useSelector((state: StoreState) => state.user.value)
   const token = useSelector((state: StoreState) => state.token.value)
 
+  console.log(`stored token {from home component} : ${token} {from home component}`)
 
 
-  const artistsMock = ['eminem', 'taylor swift', 'radiohead', 'greenday', 'dualipa', 'metallica', 'the cure', 'iron maiden', 'nirvana', 'pearljam', 'Louis Armstrong', 'Duke Ellington', 'Miles Davis', 'John Coltrane', 'Ella Fitzgerald', 'Joe Rogan', 'Tim Ferriss', 'Sam Harris', 'Gary Vaynerchuk', 'Brené Brown']
+  const [artistsMock, setartistsMock] = useState(['eminem', 'taylor swift', 'radiohead', 'greenday', 'dualipa', 'metallica', 'the cure', 'iron maiden', 'nirvana', 'pearljam', 'Louis Armstrong', 'Duke Ellington', 'Miles Davis', 'John Coltrane', 'Ella Fitzgerald', 'Joe Rogan', 'Tim Ferriss', 'Sam Harris', 'Gary Vaynerchuk', 'Brené Brown'])
+
+
   const { artists, isLoading, hasError } = useArtists(artistsMock, token)
+
+
+
 
   if (!artists) {
     return (
@@ -51,61 +58,74 @@ const HomeScreen = () => {
 
 
 
-  if (isLoading) return <LoaderComponent />
-  return (
+  if (isLoading) { return <LoaderComponent /> }
+  else {
+    return (
 
-    <SafeAreaView>
-      <LinearGradient colors={["#040306", "#131624"]}>
-        <ScrollView className='p-2'>
-          <View className='flex flex-row items-center justify-around mt-8 mb-3'>
-            <Image source={{
-              uri: user.user.avatar ? user.user.avatar : "https://avatar.iran.liara.run/public/37"
-            }} className='h-16 w-16 rounded-lg'>
+      <SafeAreaView>
+        <LinearGradient colors={["#040306", "#131624"]}>
+          <ScrollView className='p-2'>
+            <View className='flex flex-row items-center justify-around mt-8 mb-5'>
+              <Image source={{
+                uri: user.user.avatar ? user.user.avatar : "https://avatar.iran.liara.run/public/37"
+              }} style={{ height: 70, width: 70, borderRadius: 50 }}>
 
-            </Image>
-            <TouchableOpacity className='flex flex-row items-center justify-center content-center p-2 border border-gray-500 rounded-3xl min-w-[140]'>
-              <Text className='text-white font-cbold'><Ionicons size={16} name='musical-note' />Music</Text>
-            </TouchableOpacity>
+              </Image>
+              <TouchableOpacity className='flex flex-row items-center justify-center content-center p-2 border border-gray-500 rounded-3xl min-w-[140]'>
+                <Text className='text-white font-cbold'><Ionicons size={16} name='musical-note' />Music</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity className='flex flex-row items-center justify-center content-center p-2 border border-gray-500 rounded-3xl min-w-[140]'>
-              <Text className='text-white font-cbold'><Ionicons size={16} name='mic' /> Podcast & Show </Text>
-            </TouchableOpacity>
+              <TouchableOpacity className='flex flex-row items-center justify-center content-center p-2 border border-gray-500 rounded-3xl min-w-[140]'>
+                <Text className='text-white font-cbold'><Ionicons size={16} name='mic' /> Podcast & Show </Text>
+              </TouchableOpacity>
 
-          </View>
-          <View className='flex-row  justify-between'>
-            <CardHeader originColor="#33006f" title="Favorites" icon="heart"></CardHeader>
-            <CardHeader originColor="#2D46B9" title="News" icon="newspaper"></CardHeader>
-          </View>
-          <View className='flex-row  justify-between'>
-            <CardHeader originColor="#E11185" title="Coding" icon="code"></CardHeader>
-            <CardHeader originColor="orange" title="Soundtrack" icon="film-outline"></CardHeader>
-          </View>
-
-          <HomeCardSection title="Artisti più popolari">
-
-            {popular.map((artist) => <ArtistCard imageUri={artist.images[0].url} artistName={artist.name} key={artist.name} />)}
-          </HomeCardSection>
-          <HomeCardSection title="Artisti più rock">
-            {rock.map((artist) => <ArtistCard imageUri={artist.images[0].url} artistName={artist.name} key={artist.name} />)}
-          </HomeCardSection>
-          <HomeCardSection title="Artist Jazz">
-            {jazz.map((artist) => <ArtistCard imageUri={artist.images[0].url} artistName={artist.name} key={artist.name} />)}
-          </HomeCardSection>
-
-          <HomeCardSection title="Podcast">
-            {podcast.map((artist) => <ArtistCard imageUri={artist.images[0].url} artistName={artist.name} key={artist.name} />)}
-          </HomeCardSection>
-
-          <FakeListComponent />
+            </View>
+            <View className='flex-row  justify-between'>
+              <CardHeader originColor="#33006f" title="Favorites" icon="heart"></CardHeader>
+              <CardHeader originColor="#2D46B9" title="News" icon="newspaper"></CardHeader>
+            </View>
+            <View className='flex-row  justify-between'>
+              <CardHeader originColor="#E11185" title="Coding" icon="code"></CardHeader>
+              <CardHeader originColor="orange" title="Soundtrack" icon="film-outline"></CardHeader>
+            </View>
 
 
-        </ScrollView>
-      </LinearGradient>
-    </SafeAreaView>
+            
+            <HomeCardSection title="Artisti più popolari">
+
+
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={popular} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+
+
+            </HomeCardSection>
+            <HomeCardSection title="Artisti più rock">
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={rock} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+            </HomeCardSection>
+            <HomeCardSection title="Artist Jazz">
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={jazz} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+            </HomeCardSection>
+
+            <HomeCardSection title="Podcast">
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+            </HomeCardSection>
+
+            <FakeListComponent />
+
+
+          </ScrollView>
+        </LinearGradient>
+      </SafeAreaView>
 
 
 
-  );
+    );
+
+  }
+
+
+
+
+
 }
 
 export default HomeScreen

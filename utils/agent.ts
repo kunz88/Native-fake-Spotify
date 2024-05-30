@@ -11,7 +11,7 @@ axios.defaults.baseURL = 'http://192.168.10.3:3000';
  axios.defaults.withCredentials = true; 
 
 // funzione per simulare un ritardo nel loading delle pagine
- const sleep = () => new Promise(resolve => setTimeout(resolve , 2000));
+export const sleep = () => new Promise(resolve => setTimeout(resolve , 2000));
 
 
 axios.interceptors.response.use(async response => {

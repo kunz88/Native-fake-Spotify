@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import HomeCardSection from '../HomeCardSection/HomeCardSection'
 import ArtistCard from '../ArtistCard/ArtistCard'
+import { FlatList } from 'react-native-gesture-handler'
 
 
 const top = [{ pictureUrl: "https://storage.googleapis.com/pr-newsroom-wp/1/2023/11/Artists-Global-GREEN_1x1.png", subTitle: "Globally Top Songs", id: 1 },
@@ -26,13 +27,14 @@ const FakeListComponent = () => {
     return (
         <>
             <HomeCardSection title="Classifiche in primo piano">
-                {top.map((artist) => <ArtistCard imageUri={artist.pictureUrl} artistName={artist.subTitle} key={artist.id} />)}
+                <FlatList horizontal showsHorizontalScrollIndicator={false} data={top} renderItem={({item}) => <ArtistCard imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
+               
             </HomeCardSection>
             <HomeCardSection title="Audiobook">
-                {audiobook.map((artist) => <ArtistCard imageUri={artist.pictureUrl} artistName={artist.subTitle} key={artist.id} />)}
+            <FlatList horizontal showsHorizontalScrollIndicator={false} data={audiobook} renderItem={({item}) => <ArtistCard imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
             </HomeCardSection>
             <HomeCardSection title="Podcast di tendenza">
-                {podcast.map((artist) => <ArtistCard imageUri={artist.pictureUrl} artistName={artist.subTitle} key={artist.id} />)}
+            <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({item}) => <ArtistCard imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
             </HomeCardSection>
         </>
 

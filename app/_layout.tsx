@@ -9,6 +9,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -41,19 +42,22 @@ export default function RootLayout() {
   }
 
   return (
-    <Provider store={store}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <SafeAreaProvider>
-          <Stack>
-          <Stack.Screen name="(auth)/welcome" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)/signup" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </SafeAreaProvider>
-      </ThemeProvider>
-    </Provider>
+    <GestureHandlerRootView style={{flex:1}}>
+      <Provider store={store}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <SafeAreaProvider>
+            <Stack>
+              <Stack.Screen name="(auth)/welcome" options={{ headerShown: false }} />
+              <Stack.Screen name="(auth)/signup" options={{ headerShown: false }} />
+              <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </SafeAreaProvider>
+        </ThemeProvider>
+      </Provider>
+    </GestureHandlerRootView>
+
   );
 }
