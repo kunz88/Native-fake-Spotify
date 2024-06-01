@@ -32,7 +32,7 @@ Expo Go non può essere utilizzato per lo sviluppo e il test locale di applicazi
 
 
 
-// serve per chidere il popup del browser, senza di questo non si chiuderebbe
+// serve per chiudere il popup del browser, senza di questo non si chiuderebbe
 WebBrowser.maybeCompleteAuthSession();
 
 // Endpoint
@@ -134,6 +134,7 @@ const WelcomeComponent = () => {
 
 
   const user = useSelector((state: StoreState) => state.user.value)
+  const token = useSelector((state:StoreState) => state.token.value)
 
 
   return (
@@ -144,7 +145,7 @@ const WelcomeComponent = () => {
         <Text className="font-cbold text-white text-3xl mb-4 ">Grazie per esserti Autenticato con Spotify!</Text>
       </View>
 
-      <TouchableOpacity onPress={() => { promptAsync() }} disabled={!request}>
+      <TouchableOpacity onPress={token ? () => {router.replace("home")} : () => { promptAsync() }} disabled={!request}>
         <Text className='text-primary font-cbold text-lg'>Entra e inizia ad ascoltare</Text>
       </TouchableOpacity>
     </Container>

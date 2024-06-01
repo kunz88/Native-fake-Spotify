@@ -9,10 +9,8 @@ export const playerSlice = createSlice({
         value:null as (null | Track)
     },
     reducers:{
-        setPlayedSong: (state,action:PayloadAction<Track>)=>{
-
+        setPlayedSong: (state,action:PayloadAction<Track | null>)=>{
             state.value = action.payload
-
         }
     }
 }

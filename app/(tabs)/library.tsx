@@ -2,9 +2,11 @@
 
 
 
+import { setPlayedSong } from '@/SliceContext/playerSlice';
 import CardTrack from '@/components/CardTrack/CardTrack';
 import Container from '@/components/Container';
 import LoaderComponent from '@/components/LoaderComponent';
+import PlayerComponent from '@/components/PlayerComponent/PlayerComponent';
 import { FavoritesSongs, SavedTrackResponse } from '@/model/savedTrackTypes';
 import { StoreState } from '@/store/store';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Pressable, SafeAreaView, TextInput, View, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
@@ -24,13 +26,39 @@ import { useSelector } from 'react-redux';
 
 const Library = () => {
 
+
+
+
   const [favoritesTracks, setFavoritesTracks] = useState<FavoritesSongs[] | null>(null)
   const [total, setTotal] = useState(0)
 
   const [filter, setFilter] = useState('')
 
   const [isLoading, setisLoading] = useState(false)
+
   const token = useSelector((state: StoreState) => state.token.value)
+
+  const dispatch = useDispatch()
+
+
+
+  const startPlaylist = () => {
+
+    if(favoritesTracks){
+      dispatch(setPlayedSong(favoritesTracks[0].track))
+  
+    }
+
+
+  }
+
+
+ 
+  
+  const playedSong = useSelector((state:StoreState) => state.player.value)
+
+
+
 
   console.log(`token  {from Library page} : ${token}`)
 
@@ -69,6 +97,10 @@ const Library = () => {
   }, [token])
 
   console.log(favoritesTracks)
+ 
+
+
+
 
 
   if (isLoading) return (
@@ -115,7 +147,7 @@ const Library = () => {
 
             </View>
 
-            <Pressable className='w-12 h-12 rounded-3xl bg-primary flex items-center justify-center'>
+            <Pressable onPress={() => startPlaylist()} className='w-12 h-12 rounded-3xl bg-primary flex items-center justify-center'>
               <Ionicons size={22} name={"play"} />
             </Pressable>
 
@@ -124,8 +156,11 @@ const Library = () => {
 
 
           <FlatList showsVerticalScrollIndicator={false} data={favoritesTracks} renderItem={(track) => (<CardTrack imageUrl={track.item.track.album.images[0].url} songName={track.item.track.name} authorName={`Artist - ${track.item.track.artists[0].name}`} />)}></FlatList>
-
+          {playedSong && <PlayerComponent imageUri={playedSong?.album?.images[0]?.url} title={playedSong?.name} artistName={playedSong?.artists[0]?.name}></PlayerComponent>}
         </View>
+
+        
+
 
 
 
