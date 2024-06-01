@@ -1,17 +1,26 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { FavoritesSongs } from '@/model/savedTrackTypes'
+
 
 type CardTrackProps = {
-    name:string
+    songName:string,
+    authorName:string,
+    imageUrl:string
 }
 
 
-const CardTrack = ({name}:CardTrackProps) => {
+const CardTrack = ({songName,imageUrl,authorName}:CardTrackProps) => {
   return (
-    <View>
-      <Text>{name}</Text>
-    </View>
+    <Pressable className='flex-row items-center p-2 ml-1'>
+      <Image source={{uri:imageUrl}} resizeMode='contain' className='w-10 h-10'></Image>
+
+      <View>
+      <Text className='font-cbold text-white ml-2'>{songName}</Text>
+      <Text className='font-cbook ml-2 text-gray-400'>{authorName}</Text>
+
+      </View>
+      
+    </Pressable>
   )
 }
 

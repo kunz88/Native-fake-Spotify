@@ -58,10 +58,10 @@ const HomeScreen = () => {
 
 
 
-  if (isLoading) { return <LoaderComponent /> }
-  else {
+  
+  
     return (
-
+      isLoading ?  <LoaderComponent /> :
       <SafeAreaView>
         <LinearGradient colors={["#040306", "#131624"]}>
           <ScrollView className='p-2'>
@@ -94,19 +94,19 @@ const HomeScreen = () => {
             <HomeCardSection title="Artisti più popolari">
 
 
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={popular} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={popular} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
 
 
             </HomeCardSection>
             <HomeCardSection title="Artisti più rock">
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={rock} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={rock} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
             </HomeCardSection>
             <HomeCardSection title="Artist Jazz">
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={jazz} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={jazz} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
             </HomeCardSection>
 
             <HomeCardSection title="Podcast">
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({ item }) => <ArtistCard imageUri={item.images[0].url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
             </HomeCardSection>
 
             <FakeListComponent />
@@ -126,7 +126,7 @@ const HomeScreen = () => {
 
 
 
-}
+
 
 export default HomeScreen
 

@@ -4,8 +4,12 @@ import axios, { AxiosResponse } from "axios";
 // UILIZIAMO UN AGENT PER CENTRALIZZARE TUTTE LE NOSTRE CHIAMATE ALLE API
 // EVITANDO RIDONDANZA DEL CODICE
 
+const homeVodafone = "192.168.10.3"
+
+const schoolAula2 = "10.0.2.5"
+
 // opzione per l'url base per tutte le chiamate di axios
-axios.defaults.baseURL = 'http://192.168.10.3:3000';
+axios.defaults.baseURL = `http://${homeVodafone}:3000`;
 
 // opzione per ricezione di cookies
  axios.defaults.withCredentials = true; 

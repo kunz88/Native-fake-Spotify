@@ -8,7 +8,8 @@ module.exports = {
         secondary:"#121212",
         cardprimary:"#2D46B9",
         cardsecondary:"#E11185",
-        cardBody:"#202020"
+        cardBody:"#202020",
+        inputColor:"#42275a"
       },
       
       fontFamily:{
