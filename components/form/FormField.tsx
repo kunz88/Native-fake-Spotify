@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 
 type FormFieldProps = {
-    value: string,
+    value?: string,
     title:string,
     placeholder:string,
     isSecure:boolean,

@@ -1,5 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Entypo, Ionicons } from '@expo/vector-icons'
 
 
 type CardTrackProps = {
@@ -19,6 +20,9 @@ const CardTrack = ({songName,imageUrl,authorName}:CardTrackProps) => {
       <Text className='font-cbook ml-2 text-gray-400'>{authorName}</Text>
 
       </View>
+
+      
+      
       
     </Pressable>
   )

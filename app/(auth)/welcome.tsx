@@ -146,7 +146,8 @@ const WelcomeComponent = () => {
       </View>
 
       <TouchableOpacity onPress={token ? () => {router.replace("home")} : () => { promptAsync() }} disabled={!request}>
-        <Text className='text-primary font-cbold text-lg'>Entra e inizia ad ascoltare</Text>
+
+        <Text className='text-primary font-cbold text-lg'>{token ? "Entra e inizia ad ascoltare" : "Autenticati con Spotify"}</Text>
       </TouchableOpacity>
     </Container>
   )

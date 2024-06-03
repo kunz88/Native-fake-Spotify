@@ -27,14 +27,14 @@ const FakeListComponent = () => {
     return (
         <>
             <HomeCardSection title="Classifiche in primo piano">
-                <FlatList horizontal showsHorizontalScrollIndicator={false} data={top} renderItem={({item}) => <ArtistCard imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
+                <FlatList horizontal showsHorizontalScrollIndicator={false} data={top} renderItem={({item}) => <ArtistCard id="34UhPkLbtFKRq3nmfFgejG" imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
                
             </HomeCardSection>
             <HomeCardSection title="Audiobook">
-            <FlatList horizontal showsHorizontalScrollIndicator={false} data={audiobook} renderItem={({item}) => <ArtistCard imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
+            <FlatList horizontal showsHorizontalScrollIndicator={false} data={audiobook} renderItem={({item}) => <ArtistCard id="34UhPkLbtFKRq3nmfFgejG" imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
             </HomeCardSection>
             <HomeCardSection title="Podcast di tendenza">
-            <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({item}) => <ArtistCard imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
+            <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({item}) => <ArtistCard id="34UhPkLbtFKRq3nmfFgejG" imageUri={item.pictureUrl} artistName={item.subTitle.length > 15 ? `${item.subTitle.slice(0,12)}..`: item.subTitle} key={item.id} />}></FlatList>
             </HomeCardSection>
         </>
 

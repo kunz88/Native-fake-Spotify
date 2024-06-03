@@ -24,10 +24,10 @@ const HomeScreen = () => {
   const user = useSelector((state: StoreState) => state.user.value)
   const token = useSelector((state: StoreState) => state.token.value)
 
-  console.log(`stored token {from home component} : ${token} {from home component}`)
+  /* console.log(`stored token {from home component} : ${token}`) */
 
 
-  const [artistsMock, setartistsMock] = useState(['eminem', 'taylor swift', 'radiohead', 'greenday', 'dualipa', 'metallica', 'the cure', 'iron maiden', 'nirvana', 'pearljam', 'Louis Armstrong', 'Duke Ellington', 'Miles Davis', 'John Coltrane', 'Ella Fitzgerald', 'Joe Rogan', 'Tim Ferriss', 'Sam Harris', 'Gary Vaynerchuk', 'Brené Brown'])
+  const [artistsMock, setartistsMock] = useState(['eminem', 'taylor swift', 'radiohead', 'greenday', 'dualipa', 'metallica', 'the cure', 'iron maiden', 'nirvana', 'mogway', 'Louis Armstrong', 'Duke Ellington', 'Miles Davis', 'John Coltrane', 'Ella Fitzgerald', 'Joe Rogan', 'Tim Ferriss', 'Sam Harris', 'Gary Vaynerchuk', 'Brené Brown'])
 
 
   const { artists, isLoading, hasError } = useArtists(artistsMock, token)
@@ -94,19 +94,19 @@ const HomeScreen = () => {
             <HomeCardSection title="Artisti più popolari">
 
 
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={popular} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={popular} renderItem={({ item }) => <ArtistCard id={item.id} imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
 
 
             </HomeCardSection>
             <HomeCardSection title="Artisti più rock">
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={rock} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={rock} renderItem={({ item }) => <ArtistCard id={item.id} imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
             </HomeCardSection>
             <HomeCardSection title="Artist Jazz">
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={jazz} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={jazz} renderItem={({ item }) => <ArtistCard id={item.id} imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
             </HomeCardSection>
 
             <HomeCardSection title="Podcast">
-              <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({ item }) => <ArtistCard imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
+              <FlatList horizontal showsHorizontalScrollIndicator={false} data={podcast} renderItem={({ item }) => <ArtistCard id={item.id} imageUri={item.images[0]?.url} artistName={item.name.length > 15 ? `${item.name.slice(0, 12)}..` : item.name} key={item.name} />}></FlatList>
             </HomeCardSection>
 
             <FakeListComponent />

@@ -1,5 +1,7 @@
 
-import LoaderComponent from '@/components/LoaderComponent';
+import AlbumCard from '@/components/AlbumCard/AlbumCard';
+import ArtistCard from '@/components/ArtistCard/ArtistCard';
+import Container from '@/components/Container';
 import FormField from '@/components/form/FormField';
 import AlbumType from '@/model/albumType';
 import ArtistsResult from '@/model/artistQuery';
@@ -7,7 +9,8 @@ import { StoreState } from '@/store/store';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import {  Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
@@ -33,9 +36,10 @@ const Search = () => {
     };
 
     setAlbumList(null)
-    if (!artistName || !(artistName.length > 4)) {
+    if(searchInput.length < 4){
       return
     }
+
 
     try {
       setIsLoading(true)
@@ -44,9 +48,7 @@ const Search = () => {
 
       const albumResponse = await axios.get<AlbumType>(`https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=album&market=US&limit=50`, requestHeadears)
       const albums = albumResponse.data
-      if (!albums) {
-        setAlbumList(null)
-      }
+
       setAlbumList(albums)
       setIsLoading(false)
 
@@ -54,54 +56,69 @@ const Search = () => {
       console.log(error)
       setHasError(true)
     }
-    finally {
-      console.log("chiamate terminate")
-    }
-
   }
 
-  const handleInputChange = (event: string) => { // tipo ufficiale dell'evento onChange dell'input type
-    setSearchInput(event)
-    console.log(searchInput)
+  const handleInputChange = (event: string) => {
+
+
+    setAlbumList(null)
+
+    if(event.length > 4){
+      setSearchInput(event)
+
+    }
+    return
+
+
   }
 
   const token = useSelector((state: StoreState) => state.token.value)
 
-
-
   useEffect(() => {
 
-    if (!token) {
-      setHasError(true)
-      return
-    }
-    fetchAlbums(searchInput,token).then(()=>{
-      console.log("chiamata fatta")
+    fetchAlbums(searchInput, token).then(() => {
+      console.log("chiamata fatta {from fetchAlbums , search component}")
+    }).catch((error) => {
+      console.log(`problemi allinterno dello use effect : ${error}`)
     })
 
-  }, [searchInput, token])
+  }, [searchInput])
 
 
 
-  if (isLoading) return <LoaderComponent />
+
 
 
 
   return (
     <LinearGradient colors={["#000", "#516395"]} className='flex-1 items-center'>
       <SafeAreaView>
-        <ScrollView>
-          <FormField title='Search' placeholder='cerca qualcosa' value={searchInput} isSecure={false} handleChangeEvent={handleInputChange}></FormField>
-        </ScrollView>
+        <View className='flex items-center mb-3'>
+          <FormField type="web-search" title='Search' placeholder='cerca qualcosa' isSecure={false} handleChangeEvent={handleInputChange}></FormField>
+        </View>
+
+        {isLoading && (
+        <View className='flex justify-center items-center'>
+
+          <Text className='text-white font-cbold text-xl'>
+            Loading..
+          </Text>
 
 
+        </View>)}
+        {hasError && <View className='flex justify-center items-center'>
+
+        <Text className='text-white font-cbold text-xl'>
+          Oops there was an error
+        </Text>
+        </View>}
+        { albumList && <View className='flex-1 justify-center items-center'>
+          <FlatList numColumns={3} data={albumList?.items} renderItem={({ item }) => <AlbumCard artistName={item.name} imageUri={item.images[0]?.url} />}></FlatList>
+
+        </View>
+        }
 
       </SafeAreaView>
-
-
-
-
-
     </LinearGradient>
 
   );
