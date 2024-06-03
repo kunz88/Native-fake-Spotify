@@ -31,7 +31,7 @@ const ArtistDetails = () => {
   return (
     isFetching || isFetchingTrackList ? <LoaderComponent /> :
       data &&
-      <SafeAreaView className='h-full'>
+      <SafeAreaView className='h-full w-full'>
 
         <View className="justify-center items-center w-full min-h-[85vh] ">
           <LinearGradient colors={["#f59e0b", "#111827"]} className='w-full h-56 relative'>
@@ -54,7 +54,7 @@ const ArtistDetails = () => {
 
           </View>
 
-          <View className='flex-1 items-start w-11/12'>
+          <View className='flex-1 items-start w-full'>
             <FlatList
           
               showsVerticalScrollIndicator={false}
